@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--控制台输出配置  -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{60} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!--  配置文件-->
+	<appender name="infofile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">   
+  			<level>error</level>   <!--  若为error则忽略，不是接收执行规则-->
+  			<onMatch>DENY</onMatch>
+  			<onMismatch>ACCEPT</onMismatch>
+		</filter>  
+		<encoder>
+			<pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{60} - %msg%n</pattern>
+		</encoder>
+		<!-- 滚动策略-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"><!--这个类表示每天滚动一次-->
+			<!--路径-->
+			<fileNamePattern>../logs/log-%d{yyyy-MM-dd}-info.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<appender name="errorfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+  			<level>error</level>   <!--  只能过滤比它低的日志-->
+		</filter>   
+		<encoder>
+			<pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{60} - %msg%n</pattern>
+		</encoder>
+		<!-- 滚动策略-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"><!--这个类表示每天滚动一次-->
+			<!--路径-->
+			<fileNamePattern>../logs/log-%d{yyyy-MM-dd}-error.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="console"/>
+		<appender-ref ref="infofile"/>
+		<appender-ref ref="errorfile"/>
+	</root>
+</configuration>
